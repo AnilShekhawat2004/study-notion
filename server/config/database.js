@@ -4,11 +4,10 @@ require("dotenv").config();
 let isConnected = false;
 
 exports.connect = async () => {
-
   if (isConnected) {
     return;
   }
-  
+
   try {
     await mongoose.connect(process.env.MONGODB_URL, {
       useNewUrlParser: true,

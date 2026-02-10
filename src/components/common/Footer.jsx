@@ -1,6 +1,5 @@
-import React from "react";
-import { FooterLink2 } from "../../data/footer-links";
 import { Link } from "react-router-dom";
+import { FooterLink2 } from "../../data/footer-links";
 
 // Images
 import Logo from "../../assets/Logo/Logo-Full-Light.png";
@@ -48,10 +47,10 @@ const Footer = () => {
                 })}
               </div>
               <div className="flex gap-3 text-lg ">
-                <FaFacebook className="hover:text-richblack-50 cursor-pointer"/>
-                <FaGoogle className="hover:text-richblack-50 cursor-pointer"/>
-                <FaXTwitter className="hover:text-richblack-50 cursor-pointer"/>
-                <FaYoutube className="hover:text-richblack-50 cursor-pointer"/>
+                <FaFacebook className="hover:text-richblack-50 cursor-pointer" />
+                <FaGoogle className="hover:text-richblack-50 cursor-pointer" />
+                <FaXTwitter className="hover:text-richblack-50 cursor-pointer" />
+                <FaYoutube className="hover:text-richblack-50 cursor-pointer" />
               </div>
               <div></div>
             </div>
@@ -173,7 +172,9 @@ const Footer = () => {
             })}
           </div>
 
-          <div className="text-center">Made with ❤️ CodeHelp © 2024 Studynotion</div>
+          <div className="text-center">
+            Made with ❤️ CodeHelp © 2024 Studynotion
+          </div>
         </div>
       </div>
     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -13,7 +13,7 @@ const VideoDetails = () => {
   const { courseId, sectionId, subSectionId } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const playerRef = useRef(null)
+  const playerRef = useRef(null);
   const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
   const { courseSectionData, courseEntireData, completedLectures } =
@@ -27,26 +27,26 @@ const VideoDetails = () => {
   useEffect(() => {
     (async () => {
       if (!courseSectionData.length) return;
-    
+
       if (!courseId && !sectionId && !subSectionId) {
         navigate(`/dashboard/enrolled-courses`);
       } else {
         const filteredData = courseSectionData.filter(
-          (course) => course._id === sectionId
+          (course) => course._id === sectionId,
         );
         const filteredVideoData = filteredData?.[0]?.SubSection.filter(
-          (data) => data._id === subSectionId
+          (data) => data._id === subSectionId,
         );
         setVideoData(filteredVideoData[0]);
         setPreviewSource(courseEntireData.thumbnail);
         setVideoEnded(false);
       }
     })();
-  }, [courseSectionData, courseEntireData, location.pathname]);
+  }, [courseSectionData, courseEntireData, location.pathname, courseId, navigate, sectionId, subSectionId]);
 
   const isFirstVideo = () => {
     const currentSectionIndx = courseSectionData.findIndex(
-      (data) => data._id === sectionId
+      (data) => data._id === sectionId,
     );
 
     const currentSubSectionIndx = courseSectionData[
@@ -58,7 +58,7 @@ const VideoDetails = () => {
 
   const goToNextVideo = () => {
     const currentSectionIndx = courseSectionData.findIndex(
-      (data) => data._id === sectionId
+      (data) => data._id === sectionId,
     );
 
     const noOfSubsections =
@@ -74,21 +74,21 @@ const VideoDetails = () => {
           currentSubSectionIndx + 1
         ]._id;
       navigate(
-        `/view-course/${courseId}/section/${sectionId}/sub-section/${nextSubSectionId}`
+        `/view-course/${courseId}/section/${sectionId}/sub-section/${nextSubSectionId}`,
       );
     } else {
       const nextSectionId = courseSectionData[currentSectionIndx + 1]._id;
       const nextSubSectionId =
         courseSectionData[currentSectionIndx + 1].SubSection[0]._id;
       navigate(
-        `/view-course/${courseId}/section/${nextSectionId}/sub-section/${nextSubSectionId}`
+        `/view-course/${courseId}/section/${nextSectionId}/sub-section/${nextSubSectionId}`,
       );
     }
   };
 
   const isLastVideo = () => {
     const currentSectionIndx = courseSectionData.findIndex(
-      (data) => data._id === sectionId
+      (data) => data._id === sectionId,
     );
 
     const noOfSubsections =
@@ -106,7 +106,7 @@ const VideoDetails = () => {
 
   const goToPrevVideo = () => {
     const currentSectionIndx = courseSectionData.findIndex(
-      (data) => data._id === sectionId
+      (data) => data._id === sectionId,
     );
 
     const currentSubSectionIndx = courseSectionData[
@@ -119,7 +119,7 @@ const VideoDetails = () => {
           currentSubSectionIndx - 1
         ]._id;
       navigate(
-        `/view-course/${courseId}/section/${sectionId}/sub-section/${prevSubSectionId}`
+        `/view-course/${courseId}/section/${sectionId}/sub-section/${prevSubSectionId}`,
       );
     } else {
       const prevSectionId = courseSectionData[currentSectionIndx - 1]._id;
@@ -130,7 +130,7 @@ const VideoDetails = () => {
           prevSubSectionLength - 1
         ]._id;
       navigate(
-        `/view-course/${courseId}/section/${prevSectionId}/sub-section/${prevSubSectionId}`
+        `/view-course/${courseId}/section/${prevSectionId}/sub-section/${prevSubSectionId}`,
       );
     }
   };
@@ -139,7 +139,7 @@ const VideoDetails = () => {
     setLoading(true);
     const res = await markLectureAsComplete(
       { courseId: courseId, subsectionId: subSectionId },
-      token
+      token,
     );
     if (res) {
       dispatch(updateCompletedLectures(subSectionId));

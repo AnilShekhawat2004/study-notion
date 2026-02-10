@@ -2,8 +2,8 @@ const express = require("express");
 const app = express();
 
 const database = require("./config/database");
-const {cloudinaryConnect} = require("./config/cloudinary");
-const cookieParser = require("cookie-parser")
+const { cloudinaryConnect } = require("./config/cloudinary");
+const cookieParser = require("cookie-parser");
 const fileUpload = require("express-fileupload");
 const cors = require("cors");
 const contactUsRoute = require("./routes/ContactUs");
@@ -29,18 +29,20 @@ app.use(cookieParser());
 app.use(express.json());
 
 //fileupload middleware
-app.use(fileUpload({
-    useTempFiles : true,
-    tempFileDir : '/tmp/'
-}));
-
-//cors middleware 
 app.use(
-	cors({
-		origin:"http://localhost:3000",
-		credentials:true,
-	})
-)
+  fileUpload({
+    useTempFiles: true,
+    tempFileDir: "/tmp/",
+  }),
+);
+
+//cors middleware
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  }),
+);
 
 //mount all api routes
 app.use("/api/v1/auth", userRoute);
@@ -51,13 +53,13 @@ app.use("/api/v1/reach", contactUsRoute);
 
 //send a response for server running
 app.get("/", (req, res) => {
-    return res.json({
-        success:true,
-        message:'Your server is running......',
-    })
-})
+  return res.json({
+    success: true,
+    message: "Your server is running......",
+  });
+});
 
 //server activate
 app.listen(PORT, () => {
-    console.log(`App is listing at ${PORT}`);
-})
+  console.log(`App is listing at ${PORT}`);
+});
