@@ -97,10 +97,9 @@ exports.deleteSection = async (req, res) => {
         courseContent: sectionId,
       },
     });
-    console.log(sectionId);
+
     //find by id an delete
     const deletedSection = await Section.findByIdAndDelete(sectionId);
-    console.log(sectionId, courseId);
 
     if (!deletedSection) {
       return res.status(404).json({

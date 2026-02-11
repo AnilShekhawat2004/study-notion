@@ -17,14 +17,15 @@ export default function Instructor() {
       setLoading(true);
       const instructorApiData = await getInstructorData(token);
       const result = await fetchInstructorCourses(token);
-      console.log(instructorApiData);
       if (instructorApiData.length) setInstructorData(instructorApiData);
       if (result) {
         setCourses(result);
       }
       setLoading(false);
     })();
-  }, [token]);
+  }, [token
+
+  ]);
 
   const totalAmount = instructorData?.reduce(
     (acc, curr) => acc + curr.totalAmountGenerated,

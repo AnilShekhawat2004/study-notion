@@ -29,12 +29,10 @@ function ReviewSlider() {
       );
       if (data?.success) {
         setReviews(data?.data);
-        console.log("Reviews data:", data?.data);
       }
     })();
   }, []);
 
-  // console.log(reviews)
 
   return (
     <div className="text-white ">
