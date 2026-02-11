@@ -5,6 +5,9 @@ It supports **role-based access** for **Students** and **Instructors**, secure a
 
 This project is built to simulate a **real-world EdTech application** with dashboards, analytics, and secure APIs.
 
+🔗 **Live Website:** https://study-notion-two-silk.vercel.app/
+
+
 ---
 
 ## 🚀 Key Features
@@ -208,6 +211,8 @@ Feel free to fork, explore, and contribute.
 ## 📌 Author
 **Anil Singh Shekhawat**  
 Full Stack Web Developer
+
+Live Project: https://study-notion-two-silk.vercel.app/
 
 ---
 
