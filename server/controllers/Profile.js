@@ -146,9 +146,9 @@ exports.updateDisplayPicture = async (req, res) => {
 exports.getEnrolledCourses = async (req, res) => {
   try {
     const userId = req.user.id;
-    let userDetails = await User.findOne({
-      _id: userId,
-    })
+
+    // Find User and Populate Course Details
+    let userDetails = await User.findById(userId)
       .populate({
         path: "courses",
         populate: {
@@ -159,52 +159,78 @@ exports.getEnrolledCourses = async (req, res) => {
         },
       })
       .exec();
+
+    // Check User Exists
+    if (!userDetails) {
+      return res.status(404).json({
+        success: false,
+        message: `User not found with id: ${userId}`,
+      });
+    }
+
+    // Convert mongoose document to normal object
     userDetails = userDetails.toObject();
-    var SubsectionLength = 0;
-    for (var i = 0; i < userDetails.courses.length; i++) {
+
+    // Loop Through All Courses
+    for (let i = 0; i < userDetails.courses.length; i++) {
       let totalDurationInSeconds = 0;
-      SubsectionLength = 0;
-      for (var j = 0; j < userDetails.courses[i].courseContent.length; j++) {
-        totalDurationInSeconds += userDetails.courses[i].courseContent[
-          j
-        ].SubSection.reduce(
-          (acc, curr) => acc + parseInt(curr.timeDuration),
-          0,
+      let subsectionLength = 0;
+
+      const course = userDetails.courses[i];
+
+      // Loop Through Sections
+      for (let j = 0; j < course.courseContent.length; j++) {
+        const section = course.courseContent[j];
+
+        // Calculate Total Duration
+        totalDurationInSeconds += section.SubSection.reduce(
+          (acc, curr) =>
+            acc + (parseInt(curr.timeDuration) || 0),
+          0
         );
-        userDetails.courses[i].totalDuration = convertSecondsToDuration(
-          totalDurationInSeconds,
-        );
-        SubsectionLength +=
-          userDetails.courses[i].courseContent[j].SubSection.length;
+
+        // Count Total Videos
+        subsectionLength += section.SubSection.length;
       }
-      let courseProgressCount = await CourseProgress.findOne({
-        courseId: userDetails.courses[i]._id,
+
+      // Add Total Duration
+      course.totalDuration = convertSecondsToDuration(
+        totalDurationInSeconds
+      );
+
+      // Find Course Progress
+      const courseProgress = await CourseProgress.findOne({
+        courseId: course._id,
         userId: userId,
       });
-      courseProgressCount = courseProgressCount?.completedVideos.length;
-      if (SubsectionLength === 0) {
-        userDetails.courses[i].progressPercentage = 100;
+
+      // Completed Videos Count
+      const completedVideos =
+        courseProgress?.completedVideos?.length || 0;
+
+      // Calculate Progress Percentage
+      if (subsectionLength === 0) {
+        course.progressPercentage = 100;
       } else {
-        // To make it up to 2 decimal point
         const multiplier = Math.pow(10, 2);
-        userDetails.courses[i].progressPercentage =
+
+        course.progressPercentage =
           Math.round(
-            (courseProgressCount / SubsectionLength) * 100 * multiplier,
+            (completedVideos / subsectionLength) *
+              100 *
+              multiplier
           ) / multiplier;
       }
     }
 
-    if (!userDetails) {
-      return res.status(400).json({
-        success: false,
-        message: `Could not find user with id: ${userDetails}`,
-      });
-    }
+    // Return Response
     return res.status(200).json({
       success: true,
       data: userDetails.courses,
     });
   } catch (error) {
+    console.log("GET ENROLLED COURSES ERROR:", error);
+
     return res.status(500).json({
       success: false,
       message: error.message,

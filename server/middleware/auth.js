@@ -6,40 +6,42 @@ const { json } = require("express");
 //auth
 exports.auth = async (req, res, next) => {
   try {
-    //extract token
+    // Extract token safely
     const token =
-      req.cookies.token ||
-      req.body.token ||
-      req.header("Authorization").replace("Bearer ", "");
+      req.cookies?.token ||
+      req.body?.token ||
+      req.header("Authorization")?.replace("Bearer ", "");
 
-    //if token missing, then return response
+    // Check if token exists
     if (!token) {
       return res.status(401).json({
         success: false,
-        message: "Token is missing",
+        message: "Token Missing",
       });
     }
 
-    //verify the token
     try {
-      const decode = await jwt.verify(token, process.env.JWT_SECRET);
-      req.user = decode;
+      // Verify token
+      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+      req.user = decoded;
     } catch (error) {
-      //verfication - issue
       return res.status(401).json({
         success: false,
-        message: "Token is invalid",
+        message: "Token Invalid",
       });
     }
+
     next();
   } catch (error) {
+    console.log("Auth middleware error:", error);
+
     return res.status(401).json({
       success: false,
-      message: "Something went wrong while validating the token",
+      message: "Something went wrong while validating token",
     });
   }
 };
-
 //isStudent
 exports.isStudent = async (req, res, next) => {
   try {
