@@ -26,6 +26,8 @@ import Signup from "./Pages/Signup";
 import UpdatePassword from "./Pages/UpdatePassword";
 import VerifyEmail from "./Pages/VerfiyEmail";
 import ViewCourse from "./Pages/ViewCourse";
+import ACode from "./components/core/Qrcode/Acode"
+import JCode from "./components/core/Qrcode/JCode"
 import { ACCOUNT_TYPE } from "./utils/constants";
 
 function App() {
@@ -53,6 +55,8 @@ function App() {
           }
         />
         <Route path="/about" element={<About />} />
+        <Route path="/6879b4d2f3a8c1e54d7b91a3A12" element={<ACode/>}/>
+        <Route path="/6879b4d2f3a8c1e54d7b91a3J12" element={<JCode/>}/>
         <Route path="/contact" element={<Contact />} />
         <Route path="*" element={<Error />} />
         <Route

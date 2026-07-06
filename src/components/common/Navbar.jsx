@@ -37,6 +37,17 @@ function Navbar() {
     return matchPath({ path: route }, location.pathname);
   };
 
+  const hideNavbarRoutes = [
+    "/6879b4d2f3a8c1e54d7b91a3A12",
+    "/6879b4d2f3a8c1e54d7b91a3J12",
+  ];
+
+  const shouldHideNavbar = hideNavbarRoutes.includes(location.pathname);
+
+  if (shouldHideNavbar) {
+    return null;
+  }
+
   return (
     <div
       className={`flex h-14 items-center justify-center border-b-[1px] border-b-richblack-700 ${
