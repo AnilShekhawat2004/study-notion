@@ -252,5 +252,5 @@ details > summary::-webkit-details-marker {
 }
 
 .arrow-shape {
-  clip-path: polygon(0 0, 82% 0, 100% 50%, 82% 100%, 0 100%, 18% 50%);
+  clip-path: polygon(0 0, 78% 0, 100% 50%, 78% 100%, 0 100%, 22% 50%);
 }
